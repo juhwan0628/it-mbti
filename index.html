@@ -199,6 +199,7 @@
                     <h3 id="result-type" class="text-3xl font-bold mb-2">TECH</h3>
                     <p id="result-title" class="text-lg font-semibold">The Tech Explorer</p>
                 </div>
+                <p id="result-description" class="text-gray-700 text-md mb-8 leading-relaxed"></p>
             </div>
             
 
@@ -296,21 +297,21 @@
         ];
 
         const personalityTypes = {
-            "IFDP": { title: "The AI Artist", avatar: "ai-artist" },
-            "IFDA": { title: "The Dream Architect", avatar: "dream-architect" },
-            "IFTP": { title: "The Digital Wizard", avatar: "digital-wizard" },
-            "IFTA": { title: "The Design Researcher", avatar: "design-researcher" },
-            "IBDP": { title: "The Code Guardian", avatar: "code-guardian" },
-            "IBDA": { title: "The Data Detective", avatar: "data-detective" },
-            "IBTP": { title: "The Feature Inventor", avatar: "feature-inventor" },
-            "IBTA": { title: "The System Architect", avatar: "system-architect" },
-            "EFDP": { title: "The Idea Planner", avatar: "idea-planner" },
-            "EFDA": { title: "The Storyteller", avatar: "storyteller" },
-            "EFTP": { title: "The Project Leader", avatar: "project-leader" },
-            "EFTA": { title: "The Knowledge Explorer", avatar: "knowledge-explorer" },
-            "EBDP": { title: "The All-Round Fixer", avatar: "all-round-fixer" },
-            "EBDA": { title: "The Data Strategist", avatar: "data-strategist" },
-            "EBTP": { title: "The Genius Engineer", avatar: "genius-engineer" },
+            "IFDP": { title: "The AI Artist", avatar: "ai-artist", description: "A sensitive designer who quietly uses their imagination to make the world more beautiful." },
+            "IFDA": { title: "The Dream Architect", avatar: "dream-architect", description: "A creator who carefully plans to make things that are both beautiful and smart." },
+            "IFTP": { title: "The Digital Wizard", avatar: "digital-wizard", description: "A hands-on maker who can quickly create anything they imagine." },
+            "IFTA": { title: "The Design Researcher", avatar: "design-researcher", description: "A master of detail who studies the principles of beauty to create the perfect result." },
+            "IBDP": { title: "The Code Guardian", avatar: "code-guardian", description: "A problem-solver who quietly builds perfect and strong systems behind the scenes." },
+            "IBDA": { title: "The Data Detective", avatar: "data-detective", description: "A quiet but sharp analyst who finds hidden secrets within data." },
+            "IBTP": { title: "The Feature Inventor", avatar: "feature-inventor", description: "A problem-solver who turns brilliant ideas into real code and functions." },
+            "IBTA": { title: "The System Architect", avatar: "system-architect", description: "A strategist who studies how the world works to design the most perfect systems." },
+            "EFDP": { title: "The Idea Planner", avatar: "idea-planner", description: "A team mood-maker who enjoys imagining fun ideas that everyone will love." },
+            "EFDA": { title: "The Storyteller", avatar: "storyteller", description: "A presentation expert who uses fun stories and data to capture people's hearts." },
+            "EFTP": { title: "The Project Leader", avatar: "project-leader", description: "A team captain who says \"Let's do it!\" and leads the team to turn ideas into reality fast." },
+            "EFTA": { title: "The Knowledge Explorer", avatar: "knowledge-explorer", description: "A smart leader who enjoys studying and discussing new technologies with the team." },
+            "EBDP": { title: "The All-Round Fixer", avatar: "all-round-fixer", description: "A captain who can solve any difficult problem without hesitation when working with friends." },
+            "EBDA": { title: "The Data Strategist", avatar: "data-strategist", description: "A trustworthy analyst who uses data to show the team the best path forward." },
+            "EBTP": { title: "The Genius Engineer", avatar: "genius-engineer", description: "The ultimate developer who can build any function they imagine when working with the team." },
             "EBTA": { title: "The Project Director", avatar: "project-director" }
         };
     </script>
@@ -459,6 +460,7 @@
             
             document.getElementById('result-type').textContent = personalityType;
             document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-description').textContent = result.description;
             
             const avatarImg = document.getElementById('result-avatar');
             avatarImg.src = `https://readdy.ai/api/search-image?query=$%7Bresult.avatar%7D%20character%2C%203D%20cartoon%20style%2C%20friendly%20tech%20personality%2C%20colorful%20design%2C%20technology%20elements%2C%20isolated%20on%20white%20background%2C%20centered%20composition&width=96&height=96&seq=${result.avatar}&orientation=squarish`;
