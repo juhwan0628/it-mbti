@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-MBTI Test - What's Your Tech Personality?</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#f59e0b'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+        .logo-text {
+            font-family: "Pacifico", serif;
+        }
+        .bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .slide-up {
+            animation: slideUp 0.4s ease-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f59e0b;
+            animation: confetti-fall 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        .answer-card {
+            transition: all 0.2s ease;
+        }
+        .answer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+        }
+        .answer-card.selected {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <div class="w-full max-w-md mx-auto bg-white min-h-screen relative overflow-hidden">
+        
+        <!-- Welcome Section -->
+        <section id="welcome-section" class="p-6 text-center min-h-screen flex flex-col justify-center">
+            <div class="bounce-in">
+                <div class="w-32 h-32 mx-auto mb-6 relative">
+                    <img src="https://readdy.ai/api/search-image?query=cute%20friendly%20robot%20mascot%20character%2C%203D%20cartoon%20style%2C%20colorful%20blue%20and%20purple%20gradient%2C%20smiling%20face%2C%20tech%20elements%2C%20isolated%20on%20white%20background%2C%20centered%20composition%2C%20playful%20design&width=128&height=128&seq=robot-mascot&orientation=squarish" 
+                         alt="Robot Mascot" class="w-full h-full object-cover rounded-2xl">
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">🤖 What's Your Tech Personality?</h1>
+                <p class="text-lg text-primary font-semibold mb-4">Find Your IT-MBTI Type!</p>
+                <div class="bg-gradient-to-r from-secondary/20 to-primary/20 rounded-2xl p-4 mb-8">
+                    <p class="text-gray-700 font-medium">12 Fun Questions • 2 Minutes</p>
+                    <p class="text-sm text-gray-600 mt-1">Discover which tech personality matches you best!</p>
+                </div>
+            </div>
+            <div class="fade-in">
+                <button id="start-btn" class="w-full bg-gradient-to-r from-primary to-purple-600 text-white py-4 px-8 !rounded-button text-lg font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer">
+                    <span class="flex items-center justify-center">
+                        <i class="ri-play-circle-fill ri-lg mr-2 w-6 h-6 flex items-center justify-center"></i>
+                        Start Test!
+                    </span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz-section" class="hidden p-6 pt-20 pb-24">
+            <!-- Progress Header -->
+            <div class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-10 p-4 shadow-sm">
+                <div class="max-w-md mx-auto">
+                    <div class="flex items-center justify-between mb-3">
+                        <span id="question-counter" class="text-sm font-semibold text-gray-600">Question 1 of 12</span>
+                        <button id="exit-btn" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                            <i class="ri-close-line ri-lg"></i>
+                        </button>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progress-bar" class="progress-bar bg-gradient-to-r from-primary to-purple-600 h-2 rounded-full" style="width: 8.33%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100">
+                <h2 id="question-text" class="text-xl font-bold text-gray-800 leading-relaxed">
+                    When working on a group project, do you prefer to...
+                </h2>
+            </div>
+
+            <!-- Answer Options -->
+            <div class="space-y-4 mb-8">
+                <button class="answer-card w-full bg-white rounded-2xl shadow-md p-6 text-left border-2 border-transparent hover:border-primary/30 cursor-pointer">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="ri-team-line ri-lg text-blue-600 w-6 h-6 flex items-center justify-center"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Lead the team and organize tasks</h3>
+                            <p class="text-sm text-gray-600">Take charge and make sure everyone knows their role</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="answer-card w-full bg-white rounded-2xl shadow-md p-6 text-left border-2 border-transparent hover:border-primary/30 cursor-pointer">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="ri-user-line ri-lg text-green-600 w-6 h-6 flex items-center justify-center"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Focus on your specific part quietly</h3>
+                            <p class="text-sm text-gray-600">Work independently and contribute your best work</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="px-6 py-3 bg-gray-100 text-gray-600 !rounded-button font-semibold hover:bg-gray-200 transition-colors cursor-pointer disabled:opacity-50" disabled>
+                    <i class="ri-arrow-left-line mr-2 w-4 h-4 flex items-center justify-center"></i>
+                    Previous
+                </button>
+                <button id="next-btn" class="px-6 py-3 bg-primary text-white !rounded-button font-semibold hover:bg-primary/90 transition-colors cursor-pointer opacity-50" disabled>
+                    Next
+                    <i class="ri-arrow-right-line ml-2 w-4 h-4 flex items-center justify-center"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden p-6 min-h-screen flex flex-col justify-center">
+            <div class="text-center mb-8">
+                <div class="w-24 h-24 mx-auto mb-4 relative">
+                    <img id="result-avatar" src="https://readdy.ai/api/search-image?query=tech%20explorer%20character%2C%203D%20cartoon%20style%2C%20friendly%20robot%20with%20explorer%20hat%2C%20colorful%20design%2C%20technology%20elements%2C%20isolated%20on%20white%20background%2C%20centered%20composition&width=96&height=96&seq=tech-explorer&orientation=squarish" 
+                         alt="Result Avatar" class="w-full h-full object-cover rounded-2xl">
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Your Tech Personality:</h2>
+                <div class="bg-gradient-to-r from-primary to-purple-600 text-white rounded-2xl p-6 mb-6">
+                    <h3 id="result-type" class="text-3xl font-bold mb-2">TECH</h3>
+                    <p id="result-title" class="text-lg font-semibold">The Tech Explorer</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <h4 class="font-bold text-gray-800 mb-3">What this means:</h4>
+                <p id="result-description" class="text-gray-700 leading-relaxed mb-4">
+                    You love discovering new technologies and aren't afraid to experiment! You're curious, innovative, and always looking for creative solutions to problems. You enjoy working independently but also love sharing your discoveries with others.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                            <i class="ri-lightbulb-line ri-lg text-blue-600 w-6 h-6 flex items-center justify-center"></i>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-800">Creative</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                            <i class="ri-search-line ri-lg text-green-600 w-6 h-6 flex items-center justify-center"></i>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-800">Curious</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                            <i class="ri-rocket-line ri-lg text-purple-600 w-6 h-6 flex items-center justify-center"></i>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-800">Innovative</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                            <i class="ri-share-line ri-lg text-orange-600 w-6 h-6 flex items-center justify-center"></i>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-800">Sharing</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <button id="share-btn" class="w-full bg-gradient-to-r from-secondary to-orange-500 text-white py-4 px-6 !rounded-button font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer">
+                    <i class="ri-share-line ri-lg mr-2 w-6 h-6 flex items-center justify-center"></i>
+                    Share with Friends
+                </button>
+                
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm p-4 text-center border-t border-gray-100">
+            <p class="text-sm text-gray-500 font-medium">Made by Team STEP</p>
+        </footer>
+    </div>
+
+    <script id="quiz-data">
+        const questions = [
+            {
+                question: "When you see a cool new app, what do you notice first?",
+                optionA: { text: "The beautiful design and pictures.", icon: "ri-palette-line", color: "pink", description: "You appreciate the visual appeal and user experience." },
+                optionB: { text: "The cool features and how fast it works.", icon: "ri-rocket-line", color: "purple", description: "You are impressed by its functionality and performance." },
+                dimension: "F/B"
+            },
+            {
+                question: "If you were making a new app, what part would you enjoy more?",
+                optionA: { text: "Decorating the screen and the buttons that people will click.", icon: "ri-edit-box-line", color: "blue", description: "You love creating the visual parts for users to see." },
+                optionB: { text: "Making the rules for how information is saved and works behind the scenes.", icon: "ri-database-2-line", color: "green", description: "You enjoy building the core logic and systems." },
+                dimension: "F/B"
+            },
+            {
+                question: "What's a better compliment for a website you made?",
+                optionA: { text: "'Wow, this looks so beautiful!'", icon: "ri-heart-line", color: "red", description: "You are happy when people love your design." },
+                optionB: { text: "'Wow, this is so useful and smart!'", icon: "ri-lightbulb-flash-line", color: "yellow", description: "You are happy when people find it functional." },
+                dimension: "F/B"
+            },
+            {
+                question: "When you're in a team project, what's your style?",
+                optionA: { text: "I prefer to focus quietly on my own role.", icon: "ri-user-line", color: "green", description: "You work best when you can concentrate alone." },
+                optionB: { text: "I like to talk with friends and share ideas.", icon: "ri-group-line", color: "orange", description: "You enjoy collaborating and discussing with others." },
+                dimension: "I/E"
+            },
+            {
+                question: "When you get stuck on a problem, what do you do first?",
+                optionA: { text: "I search online by myself to find the answer.", icon: "ri-search-line", color: "purple", description: "You prefer to find solutions independently." },
+                optionB: { text: "I ask a friend or a teacher for help right away.", icon: "ri-question-answer-line", color: "blue", description: "You believe in solving problems together." },
+                dimension: "I/E"
+            },
+            {
+                question: "How do you prefer to organize your thoughts?",
+                optionA: { text: "Writing it down calmly in words.", icon: "ri-book-read-line", color: "blue", description: "You organize your thoughts by writing." },
+                optionB: { text: "Explaining it out loud to someone else.", icon: "ri-speak-line", color: "red", description: "You organize your thoughts by talking." },
+                dimension: "I/E"
+            },
+            {
+                question: "When you get a new toy or gadget, what's the first thing you do?",
+                optionA: { text: "I read the instructions or a guide first.", icon: "ri-book-line", color: "blue", description: "You want to understand it before using it." },
+                optionB: { text: "I press all the buttons to learn by trying.", icon: "ri-gamepad-line", color: "green", description: "You learn by doing and experimenting." },
+                dimension: "A/P"
+            },
+            {
+                question: "What's more important to you when learning something new?",
+                optionA: { text: "Understanding the reason 'why' it works that way.", icon: "ri-question-mark", color: "purple", description: "You are curious about the principles." },
+                optionB: { text: "Knowing 'what' I can create with it by making something.", icon: "ri-tools-line", color: "orange", description: "You are focused on practical application." },
+                dimension: "A/P"
+            },
+            {
+                question: "How do you plan a trip with friends?",
+                optionA: { text: "I plan carefully with a map, looking up good restaurants and routes.", icon: "ri-map-line", color: "green", description: "You like to have a clear plan." },
+                optionB: { text: "I just arrive and go wherever feels interesting at the moment.", icon: "ri-compass-discover-line", color: "yellow", description: "You prefer to be spontaneous and flexible." },
+                dimension: "A/P"
+            },
+            {
+                question: "How do you decide if a new singer is popular?",
+                optionA: { text: "Looking up their album sales or music video views.", icon: "ri-bar-chart-line", color: "blue", description: "You trust the data and numbers." },
+                optionB: { text: "Simply listening to their music or watching their performances.", icon: "ri-headphone-line", color: "red", description: "You value your own experience and feeling." },
+                dimension: "D/T"
+            },
+            {
+                question: "When you have a lot of information to study, how do you handle it?",
+                optionA: { text: "Organizing the information into a chart or a graph.", icon: "ri-pie-chart-2-line", color: "purple", description: "You like to visualize and structure data." },
+                optionB: { text: "Using different tools, like a calculator, to try many methods.", icon: "ri-calculator-line", color: "green", description: "You enjoy using tools to explore the information." },
+                dimension: "D/T"
+            },
+            {
+                question: "How do you explain things to your friends?",
+                optionA: { text: "I explain using exact numbers or facts.", icon: "ri-file-list-3-line", color: "blue", description: "You rely on objective information." },
+                optionB: { text: "I explain based on my own experience of doing it.", icon: "ri-user-voice-line", color: "orange", description: "You use your personal experience to explain." },
+                dimension: "D/T"
+            }
+        ];
+
+        const personalityTypes = {
+            "IFDP": { title: "The AI Artist", avatar: "ai-artist", description: "A sensitive designer who quietly uses their imagination to make the world more beautiful." },
+            "IFDA": { title: "The Dream Architect", avatar: "dream-architect", description: "A creator who carefully plans to make things that are both beautiful and smart." },
+            "IFTP": { title: "The Digital Wizard", avatar: "digital-wizard", description: "A hands-on maker who can quickly create anything they imagine." },
+            "IFTA": { title: "The Design Researcher", avatar: "design-researcher", description: "A master of detail who studies the principles of beauty to create the perfect result." },
+            "IBDP": { title: "The Code Guardian", avatar: "code-guardian", description: "A problem-solver who quietly builds perfect and strong systems behind the scenes." },
+            "IBDA": { title: "The Data Detective", avatar: "data-detective", description: "A quiet but sharp analyst who finds hidden secrets within data." },
+            "IBTP": { title: "The Feature Inventor", avatar: "feature-inventor", description: "A problem-solver who turns brilliant ideas into real code and functions." },
+            "IBTA": { title: "The System Architect", avatar: "system-architect", description: "A strategist who studies how the world works to design the most perfect systems." },
+            "EFDP": { title: "The Idea Planner", avatar: "idea-planner", description: "A team mood-maker who enjoys imagining fun ideas that everyone will love." },
+            "EFDA": { title: "The Storyteller", avatar: "storyteller", description: "A presentation expert who uses fun stories and data to capture people's hearts." },
+            "EFTP": { title: "The Project Leader", avatar: "project-leader", description: "A team captain who says \"Let's do it!\" and leads the team to turn ideas into reality fast." },
+            "EFTA": { title: "The Knowledge Explorer", avatar: "knowledge-explorer", description: "A smart leader who enjoys studying and discussing new technologies with the team." },
+            "EBDP": { title: "The All-Round Fixer", avatar: "all-round-fixer", description: "A captain who can solve any difficult problem without hesitation when working with friends." },
+            "EBDA": { title: "The Data Strategist", avatar: "data-strategist", description: "A trustworthy analyst who uses data to show the team the best path forward." },
+            "EBTP": { title: "The Genius Engineer", avatar: "genius-engineer", description: "The ultimate developer who can build any function they imagine when working with the team." },
+            "EBTA": { title: "The Project Director", avatar: "project-director", description: "A leader who creates the most perfect results by guiding the team with logical plans and great explanations." }
+        };
+    </script>
+
+    <script id="quiz-logic">
+        let currentQuestion = 0;
+                let answers = { F: 0, B: 0, I: 0, E: 0, A: 0, P: 0, D: 0, T: 0 };
+        let selectedAnswer = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('start-btn');
+            const exitBtn = document.getElementById('exit-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const shareBtn = document.getElementById('share-btn');
+
+            startBtn.addEventListener('click', startQuiz);
+            exitBtn.addEventListener('click', showWelcome);
+            prevBtn.addEventListener('click', previousQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            shareBtn.addEventListener('click', shareResults);
+
+            setupAnswerButtons();
+        });
+
+        function startQuiz() {
+            document.getElementById('welcome-section').classList.add('hidden');
+            document.getElementById('quiz-section').classList.remove('hidden');
+            currentQuestion = 0;
+            answers = { F: 0, B: 0, I: 0, E: 0, A: 0, P: 0, D: 0, T: 0 };
+            displayQuestion();
+        }
+
+        function showWelcome() {
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('welcome-section').classList.remove('hidden');
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1} of 12`;
+            document.getElementById('question-text').textContent = question.question;
+            
+            const progressPercent = ((currentQuestion + 1) / 12) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            const answerCards = document.querySelectorAll('.answer-card');
+            answerCards[0].innerHTML = createAnswerHTML(question.optionA);
+            answerCards[1].innerHTML = createAnswerHTML(question.optionB);
+            answerCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            selectedAnswer = null;
+            updateNavigationButtons();
+        }
+
+        function createAnswerHTML(option) {
+            return `
+                <div class="flex items-start">
+                    <div class="w-12 h-12 bg-gradient-to-br from-${option.color}-100 to-${option.color}-200 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                        <i class="${option.icon} ri-lg text-${option.color}-600 w-6 h-6 flex items-center justify-center"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">${option.text}</h3>
+                        <p class="text-sm text-gray-600">${option.description}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setupAnswerButtons() {
+            const answerCards = document.querySelectorAll('.answer-card');
+            answerCards.forEach((card, index) => {
+                card.addEventListener('click', () => selectAnswer(index));
+            });
+        }
+
+        function selectAnswer(answerIndex) {
+            const answerCards = document.querySelectorAll('.answer-card');
+            answerCards.forEach(card => card.classList.remove('selected'));
+            answerCards[answerIndex].classList.add('selected');
+            
+            selectedAnswer = answerIndex;
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            prevBtn.classList.toggle('opacity-50', currentQuestion === 0);
+            
+            nextBtn.disabled = selectedAnswer === null;
+            nextBtn.classList.toggle('opacity-50', selectedAnswer === null);
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (selectedAnswer !== null) {
+                recordAnswer();
+                
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            }
+        }
+
+        function recordAnswer() {
+            const question = questions[currentQuestion];
+            const dimension = question.dimension;
+            
+            if (selectedAnswer === 0) {
+                answers[dimension.charAt(0)]++;
+            } else {
+                answers[dimension.charAt(2)]++;
+            }
+        }
+
+        function calculatePersonalityType() {
+            let type = '';
+            type += answers.I >= answers.E ? 'I' : 'E';
+            type += answers.F >= answers.B ? 'F' : 'B';
+            type += answers.D >= answers.T ? 'D' : 'T';
+            type += answers.P >= answers.A ? 'P' : 'A';
+            return type;
+        }
+
+        function showResults() {
+            const personalityType = calculatePersonalityType();
+            const result = personalityTypes[personalityType];
+            
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            
+            document.getElementById('result-type').textContent = personalityType;
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-description').textContent = result.description;
+            
+            const avatarImg = document.getElementById('result-avatar');
+            avatarImg.src = `https://readdy.ai/api/search-image?query=$%7Bresult.avatar%7D%20character%2C%203D%20cartoon%20style%2C%20friendly%20tech%20personality%2C%20colorful%20design%2C%20technology%20elements%2C%20isolated%20on%20white%20background%2C%20centered%20composition&width=96&height=96&seq=${result.avatar}&orientation=squarish`;
+            
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            answers = { F: 0, B: 0, I: 0, E: 0, A: 0, P: 0, D: 0, T: 0 };
+            selectedAnswer = null;
+            showWelcome();
+        }
+
+        function shareResults() {
+            const personalityType = calculatePersonalityType();
+            const result = personalityTypes[personalityType];
+            const shareText = `I just discovered I'm ${result.title} (${personalityType}) in the IT-MBTI Test! 🤖 What's your tech personality?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'IT-MBTI Test Results',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText + ' ' + window.location.href).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
